@@ -1,6 +1,6 @@
 from datetime import date
 
-# Função que transforma o número em mês já formatado
+# Função que retorna o mês já formatado
 def getMes(n):
 
     # Vetor de meses
@@ -12,10 +12,11 @@ def getMes(n):
 # Recebendo as informações da entrada
 def gerarReferencia(autor, tituloDoArtigo, nomeDoSite, ano, link):
 
+    # Pegando a data
     data = str(date.today().day) + " " + getMes(date.today().month - 1) + " " + str(date.today().year)
 
     # Criando a referência perfeita
-    referencia = autor + tituloDoArtigo + ". " + nomeDoSite + ", " + ano + ". " + "Disponível em: " + link + ". Acesso em: " + data + "."
+    referencia = autor + ". " + tituloDoArtigo + ". " + nomeDoSite + ", " + ano + ". " + "Disponível em: " + link + ". Acesso em: " + data + "."
 
     # Retorno da referência
     return referencia

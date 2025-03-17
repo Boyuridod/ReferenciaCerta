@@ -105,7 +105,7 @@ inputLink = Entry(telaPrincipal)
 inputLink.grid(row= 8, column= 1, padx= 10, pady= 10, sticky="nsew")
 
 # Componentes do Autor
-x = 0
+autores = 0
 labelAutor1 = Label(telaPrincipal, text="Nome do autor(a):")
 labelAutor1.grid(row= 10, column= 0, padx= 10, pady= 10)
 inputAutor1 = Entry(telaPrincipal)
@@ -114,32 +114,32 @@ inputAutor1.grid(row= 10, column= 1, padx= 10, pady= 10, sticky="nsew")
 # TODO hint de "SOBRENOME, Nome do autor"
 
 # if(inputAutor1.cget("text") != ""):
-#     x += 2
+#     autores += 2
 
 #     labelAutor2 = Label(telaPrincipal, text="Digite o nome do autor(a) (Se houver):")
-#     labelAutor2.grid(row= 10 + x, column= 0, padx= 10, pady= 10)
+#     labelAutor2.grid(row= (10 + (autores * 2)), column= 0, padx= 10, pady= 10)
 #     inputAutor2 = Entry(telaPrincipal)
-#     inputAutor2.grid(row= 10 + x, column= 1, padx= 10, pady= 10, sticky="nsew")
+#     inputAutor2.grid(row= (10 + (autores * 2)), column= 1, padx= 10, pady= 10, sticky="nsew")
 
 #     if(inputAutor2.cget("text") != ""):
-#         x += 2
+#         autores += 1
 
 #         labelAutor3 = Label(telaPrincipal, text="Digite o nome do autor(a) (Se houver):")
-#         labelAutor3.grid(row= 10 + x, column= 0, padx= 10, pady= 10)
+#         labelAutor3.grid(row= (10 + (autores * 2)), column= 0, padx= 10, pady= 10)
 #         inputAutor3 = Entry(telaPrincipal)
-#         inputAutor3.grid(row= 10 + x, column= 1, padx= 10, pady= 10, sticky="nsew")
+#         inputAutor3.grid(row= (10 + (autores * 2)), column= 1, padx= 10, pady= 10, sticky="nsew")
 
 #         if(inputAutor3.cget("text") != ""):
-#             x += 2
+#             autores += 1
 
 #             labelAutor4 = Label(telaPrincipal, text="Digite o nome do autor(a) (Se houver):")
-#             labelAutor4.grid(row= 10 + x, column= 0, padx= 10, pady= 10)
+#             labelAutor4.grid(row= (10 + (autores * 2)), column= 0, padx= 10, pady= 10)
 #             inputAutor4 = Entry(telaPrincipal)
-#             inputAutor4.grid(row= 10 + x, column= 1, padx= 10, pady= 10, sticky="nsew")
+#             inputAutor4.grid(row= (10 + (autores * 2)), column= 1, padx= 10, pady= 10, sticky="nsew")
 
 # Componente do Botão
 botaoGerar = Button(telaPrincipal, text="Gerar referência", bootstyle = "success", command=botaoGerarOnClick)
-botaoGerar.grid(row= 12 + x, column= 1, padx= 10, pady= 10)
+botaoGerar.grid(row= (12 + (autores * 2)), column= 1, padx= 10, pady= 10)
 
 #Chamar a Tela
 
