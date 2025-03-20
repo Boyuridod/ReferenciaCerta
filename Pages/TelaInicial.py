@@ -1,18 +1,11 @@
 #pyinstaller --onefile --noconsole --icon=icone.ico --name=GeradorDeReferenciaABNT TelaInicial.py
-
 #TODO Criar um ícone para o APP
-#TODO Ver se vale a pena mudar para Custom TKINTER
-# https://youtu.be/Px-DgrQ_wjI
-# https://youtu.be/iM3kjbbKHQU
-# https://youtu.be/Miydkti_QVE
-# 🚀 Conclusão
-# Se você precisa de uma interface moderna rapidamente, ttkbootstrap é uma ótima escolha.
-# Se quiser personalização extrema e um visual mais profissional, CustomTkinter é melhor.
-# Se o objetivo for simplicidade e compatibilidade máxima, Tkinter puro já resolve.
 
-from ttkbootstrap import *
+from customtkinter import * #pip install customtkinter
+import tkinter as tk
 import pyperclip #pip install pyperclip
-from Pages.GerarReferencia import gerarReferencia
+from GerarReferencia import gerarReferencia
+
 
 # Função de limpar as entradas
 def limpar():
@@ -24,31 +17,24 @@ def limpar():
 
 # Função do botão "Gerar referência"
 def botaoGerarOnClick():
-    # Verifica se tem texto nestes componentes e limpa-os para nova entrada
-    try:
-        labelReferencia.delete(0, "end")
-        labelReferenciaGerada.delete(0, "end")
-        labelTransferencia.delete(0, "end")
-    except:
-        # Componente da Referencia
-        labelReferencia = Label(telaPrincipal, text="Referencia:")
-        labelReferencia.grid(row= 14, column= 0, padx= 10, pady= 10, sticky="w")
-
+    # Pega as entradas do usuário
     autor = inputAutor1.get()
     tituloDoArtigo = inputTituloDoArtigo.get()
     nomeDoSite = inputNomeDoSite.get()
     ano = inputAnoPublicacao.get()
     link = inputLink.get()
+    # print(autor, tituloDoArtigo, nomeDoSite, ano, link)
 
-    print(autor, tituloDoArtigo, nomeDoSite, ano, link)
-
+    # Manda para a função que gera a referência
     referencia = gerarReferencia(autor, tituloDoArtigo, nomeDoSite, ano, link)
 
-    #TODO ajustar ao tamanho do texto
-    # Componente da Referencia Gerada
-    labelReferenciaGerada = Label(telaPrincipal, text=referencia)
-    labelReferenciaGerada.grid(row= 14, column= 1, padx= 10, pady= 10, sticky="w")
+    # Habilita a edição, coloca a referência e desabilita edição
+    textReferencia.configure(state = "normal")
+    textReferencia.insert("end", referencia + "\n")
+    textReferencia.configure(state = "disabled")
 
+    # TODO Implementar try except
+    # Tenta copiar para a área de transferência, se falhar da um alerta
     try:
         pyperclip.copy(referencia)
 
@@ -57,90 +43,78 @@ def botaoGerarOnClick():
     except:
         copiado = "Não foi possível copiar para sua área de transferência. Tente copiar manualmente."
 
-    # TODO Arrumar para eu conseguir de fato copiar manualmente
-    # Componente do aviso da cópia para a área de trasferência
-    labelTransferencia = Label(telaPrincipal, text=copiado)
-    labelTransferencia.grid(row= 16, column= 1, padx= 10, pady= 10, sticky="w")
+    # # Componente do aviso da cópia para a área de trasferência
+    # labelTransferencia = CTkLabel(telaPrincipal, text=copiado)
+    # labelTransferencia.grid(padx= 10, pady= 10)
 
     limpar()
 
-    print("Foi chamado")
-
 # Predefinições
-telaPrincipal = Window()
-telaPrincipal.geometry("700x500")
+telaPrincipal = CTk()
+telaLargura = 700
+telaAltura = 500
+telaPrincipal.geometry(f"{telaLargura}x{telaAltura}")
 telaPrincipal.title("Gerador de Referência ABNT")
-style = Style("cyborg")
+telaPrincipal.grid_rowconfigure(0, weight = 0) # Impede a expansão da linha 0
+telaPrincipal.grid_columnconfigure(1, weight = 1) # Permitir a expansão da coluna 1
+set_appearance_mode("System")  # Modes: system (default), light, dark
+set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 
-# Permitir que a coluna dos Entry ocupe toda a largura disponível
-telaPrincipal.grid_columnconfigure(1, weight=1)
+# TODO Colocar uma maneira de gerar referencias impressas e referencias on-line
+# Existe uma diferença em cada uma delas
+# Vide: https://normas-abnt.espm.br/index.php?title=Um_autor
 
 # Título
-labelTitulo = Label(telaPrincipal, text="Gerador de Referência ABNT")
-# labelTitulo.grid(row= 0, column= 1, padx= 10, pady= 10)
-labelTitulo.pack(ipady=10)
+labelTitulo = CTkLabel(telaPrincipal, text = "Gerador de Referência ABNT")
+labelTitulo.grid(row = 0, column = 0, padx = 10, pady = 10, columnspan = 2)
 
 # Componentes do Título do Artigo
-labelTituloDoArtigo = Label(telaPrincipal, text="Título do artigo:")
-labelTituloDoArtigo.grid(row= 2, column= 0, padx= 10, pady= 10, sticky="w")
-inputTituloDoArtigo = Entry(telaPrincipal)
-inputTituloDoArtigo.grid(row= 2, column= 1, padx= 10, pady= 10, sticky="nsew")
+labelTituloDoArtigo = CTkLabel(telaPrincipal, text = "Título do artigo:")
+labelTituloDoArtigo.grid(row = 1, column = 0, padx = 10, pady = 10)
+inputTituloDoArtigo = CTkEntry(telaPrincipal, placeholder_text = "Digite aqui")
+inputTituloDoArtigo.grid(row = 1, column = 1, padx = 10, pady = 10, sticky="nsew")
 
 # Componentes do Nome do Site
-labelNomeDoSite = Label(telaPrincipal, text="Nome do site:")
-labelNomeDoSite.grid(row= 4, column= 0, padx= 10, pady= 10, sticky="w")
-inputNomeDoSite = Entry(telaPrincipal)
-inputNomeDoSite.grid(row= 4, column= 1, padx= 10, pady= 10, sticky="nsew")
+labelNomeDoSite = CTkLabel(telaPrincipal, text="Nome do site:")
+labelNomeDoSite.grid(row = 2, column = 0, padx = 10, pady = 10)
+inputNomeDoSite = CTkEntry(telaPrincipal, placeholder_text = "Digite aqui")
+inputNomeDoSite.grid(row = 2, column = 1, padx = 10, pady = 10, sticky="nsew")
 
 # Componentes do Ano de Publicação
-labelAnoPublicacao = Label(telaPrincipal, text="Ano da publicação:")
-labelAnoPublicacao.grid(row= 6, column= 0, padx= 10, pady= 10, sticky="w")
-inputAnoPublicacao = Entry(telaPrincipal)
-inputAnoPublicacao.grid(row= 6, column= 1, padx= 10, pady= 10, sticky="nsew")
+labelAnoPublicacao = CTkLabel(telaPrincipal, text="Ano da publicação:")
+labelAnoPublicacao.grid(row = 3, column = 0, padx = 10, pady = 10)
+inputAnoPublicacao = CTkEntry(telaPrincipal, placeholder_text = "Digite aqui")
+inputAnoPublicacao.grid(row = 3, column = 1, padx = 10, pady = 10, sticky="nsew")
 
 # Componentes do Link
-labelLink = Label(telaPrincipal, text="Link do artigo:")
-labelLink.grid(row= 8, column= 0, padx= 10, pady= 10, sticky="w")
-inputLink = Entry(telaPrincipal)
-inputLink.grid(row= 8, column= 1, padx= 10, pady= 10, sticky="nsew")
+labelLink = CTkLabel(telaPrincipal, text="Link do artigo:")
+labelLink.grid(row = 4, column = 0, padx = 10, pady = 10)
+inputLink = CTkEntry(telaPrincipal, placeholder_text = "https://exemplo.com.br")
+inputLink.grid(row = 4, column = 1, padx = 10, pady = 10, sticky="nsew")
 
 # Componentes do Autor
 autores = 0
-labelAutor1 = Label(telaPrincipal, text="Nome do autor(a):")
-labelAutor1.grid(row= 10, column= 0, padx= 10, pady= 10)
-inputAutor1 = Entry(telaPrincipal)
-inputAutor1.grid(row= 10, column= 1, padx= 10, pady= 10, sticky="nsew")
+labelAutor1 = CTkLabel(telaPrincipal, text="Nome do autor(a):")
+labelAutor1.grid(row = 5, column = 0, padx = 10, pady = 10)
+inputAutor1 = CTkEntry(telaPrincipal, placeholder_text = "SOBRENOME, Nome")
+inputAutor1.grid(row = 5, column = 1, padx = 10, pady = 10, sticky="nsew")
 
-# TODO hint de "SOBRENOME, Nome do autor"
-
-# if(inputAutor1.cget("text") != ""):
-#     autores += 2
-
-#     labelAutor2 = Label(telaPrincipal, text="Digite o nome do autor(a) (Se houver):")
-#     labelAutor2.grid(row= (10 + (autores * 2)), column= 0, padx= 10, pady= 10)
-#     inputAutor2 = Entry(telaPrincipal)
-#     inputAutor2.grid(row= (10 + (autores * 2)), column= 1, padx= 10, pady= 10, sticky="nsew")
-
-#     if(inputAutor2.cget("text") != ""):
-#         autores += 1
-
-#         labelAutor3 = Label(telaPrincipal, text="Digite o nome do autor(a) (Se houver):")
-#         labelAutor3.grid(row= (10 + (autores * 2)), column= 0, padx= 10, pady= 10)
-#         inputAutor3 = Entry(telaPrincipal)
-#         inputAutor3.grid(row= (10 + (autores * 2)), column= 1, padx= 10, pady= 10, sticky="nsew")
-
-#         if(inputAutor3.cget("text") != ""):
-#             autores += 1
-
-#             labelAutor4 = Label(telaPrincipal, text="Digite o nome do autor(a) (Se houver):")
-#             labelAutor4.grid(row= (10 + (autores * 2)), column= 0, padx= 10, pady= 10)
-#             inputAutor4 = Entry(telaPrincipal)
-#             inputAutor4.grid(row= (10 + (autores * 2)), column= 1, padx= 10, pady= 10, sticky="nsew")
+# TODO Colocar uma forma de ter mais de um autor
+# Posso fazer tipo um botão que adiciona e subtrai pra dizer a quantidade
 
 # Componente do Botão
-botaoGerar = Button(telaPrincipal, text="Gerar referência", bootstyle = "success", command=botaoGerarOnClick)
-botaoGerar.grid(row= (12 + (autores * 2)), column= 1, padx= 10, pady= 10)
+botaoGerar = CTkButton(telaPrincipal, text="Gerar referência", command=botaoGerarOnClick)
+botaoGerar.grid(row = 6, column = 0, columnspan = 2, padx = 10, pady = 10, sticky="n")
+
+# Área da resposta
+textReferencia = CTkTextbox(telaPrincipal, corner_radius=10)
+textReferencia.grid(row = 7, column = 0, columnspan = 2, padx = 10, pady = 10, sticky = "nsew")
+textReferencia.configure(state = "disabled")
+telaPrincipal.grid_rowconfigure(7, weight = 1)
+
+# Botão do Desenvolvedor
+botaoYuri = CTkButton(telaPrincipal, text = "@yuridsduarte", fg_color = "transparent", hover = False, width = 0)
+botaoYuri.grid(row = 8, column = 1, padx = 10, sticky = "e")
 
 #Chamar a Tela
-
 telaPrincipal.mainloop()

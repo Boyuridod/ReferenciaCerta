@@ -11,8 +11,7 @@ def getMes(n):
 
 # Recebendo as informações da entrada
 def gerarReferencia(autor, tituloDoArtigo, nomeDoSite, ano, link):
-
-    # Pegando a data
+    # Gerando a data
     data = str(date.today().day) + " " + getMes(date.today().month - 1) + " " + str(date.today().year)
 
     # Criando a referência perfeita
