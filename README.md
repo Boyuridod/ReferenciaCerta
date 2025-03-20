@@ -12,3 +12,8 @@
 
 # Instalador
 pyinstaller --onefile --noconsole --icon=icone.ico --name=MeuPrograma script.py
+
+<a href="https://www.flaticon.com/br/icones-gratis/lua" title="lua ícones">Lua ícones criados por Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/br/icones-gratis/brilho-do-sol" title="brilho do sol ícones">Brilho do sol ícones criados por Komar Dews - Flaticon</a>
+<a href="https://www.flaticon.com/br/icones-gratis/flor" title="flor ícones">Flor ícones criados por DinosoftLabs - Flaticon</a>
+<a href="https://www.flaticon.com/br/icones-gratis/goticula" title="gotícula ícones">Gotícula ícones criados por Karacis - Flaticon</a>![alt text](gota-de-agua.png)
