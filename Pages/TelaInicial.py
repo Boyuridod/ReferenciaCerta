@@ -1,3 +1,4 @@
+#pip install pyinstaller
 #pyinstaller --onefile --noconsole --icon="D:\Desenvolvimento Projetos\Projetos em Python\GeradorDeReferenciaABNT\Images\LogoModerna.jpg" --name=GeradorDeReferenciaABNT TelaInicial.py
 
 from customtkinter import * #pip install customtkinter
@@ -12,7 +13,7 @@ def limpar():
     inputTituloDoArtigo.delete(0, "end")
     inputNomeDoSite.delete(0, "end")
     inputAnoPublicacao.delete(0, "end")
-    inputLink.delete(0, "end")
+    inputLink.delete(0, "end")  
 
 # Função do botão "Gerar referência"
 def botaoGerarOnClick():
@@ -49,6 +50,7 @@ def botaoGerarOnClick():
     # Limpa todas as entradas para uma nova referencia
     limpar()
 
+# Função que abre meu instagram
 def instagramYuri():
     webbrowser.open("https://www.instagram.com/yuridsduarte/")
 
@@ -71,6 +73,8 @@ set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 # Título
 labelTitulo = CTkLabel(telaPrincipal, text = "Gerador de Referência ABNT")
 labelTitulo.grid(row = 0, column = 0, padx = 10, pady = 10, columnspan = 3)
+
+# TODO Implementar a troca de modo escuro e claro salvando tudo em um json
 
 # Botão para troca de modo
 botaoModo = CTkButton(telaPrincipal, image = CTkImage(Image.open("./Images/forma-de-meia-lua.png"), size=(26, 26)),
