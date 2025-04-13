@@ -1,6 +1,8 @@
 #pip install pyinstaller
 #pyinstaller --onefile --noconsole --icon="D:\Desenvolvimento Projetos\Projetos em Python\GeradorDeReferenciaABNT\Images\LogoModerna.jpg" --name=GeradorDeReferenciaABNT TelaInicial.py
 
+# TODO Criar um setup de instalação
+
 from customtkinter import * #pip install customtkinter
 from PIL import Image
 from GerarReferencia import gerarReferencia
