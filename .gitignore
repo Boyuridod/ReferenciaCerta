@@ -4,3 +4,4 @@ build/
 GeradorDeReferenciaABNT.spec
 __pycache__/
 .vscode
+/Tests

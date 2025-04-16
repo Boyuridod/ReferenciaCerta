@@ -1,13 +1,18 @@
 #pip install pyinstaller
 #pyinstaller --onefile --noconsole --icon="D:\Desenvolvimento Projetos\Projetos em Python\GeradorDeReferenciaABNT\Images\LogoModerna.jpg" --name=GeradorDeReferenciaABNT TelaInicial.py
 
-# TODO Criar um setup de instalação
+# Criar um setup de instalação
+# https://youtu.be/5U-nBAfbSek
+
+# TODO Otimizar os imports, ou seja, importar somente o que for necessário de verdade
 
 from customtkinter import * #pip install customtkinter
 from PIL import Image
 from GerarReferencia import gerarReferencia
 import pyperclip #pip install pyperclip
 import webbrowser
+import json
+import os
 
 # Função de limpar as entradas
 def limpar():
@@ -56,6 +61,55 @@ def botaoGerarOnClick():
 def instagramYuri():
     webbrowser.open("https://www.instagram.com/yuridsduarte/")
 
+# TODO Colocar um link para meu linkedin
+
+# TODO Arrumar essa função bateado na documentação
+# Função que aplica o novo tema
+def trocaTema():
+
+    tema = ["Themes/escuro.json", "Themes/claro.json"]
+
+    with open("Config/config.json", "r+") as configuracoes:
+        config = json.load(configuracoes)
+
+        modo = config["modo"]
+
+        try:
+            modo = tema[tema.index(modo) + 1]
+            print(tema.index(modo) + 1)
+        except:
+            modo = tema[0]
+
+        config["modo"] = modo
+
+        configuracoes.seek(0)
+        json.dump(config, configuracoes, indent=4)
+        configuracoes.truncate()
+
+        set_appearance_mode(modo)  # Modes: system (default), light, dark
+        # set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
+
+        print(modo)
+
+# Carregando Configurações
+try:
+    with open("Config/config.json", "r") as configuracoes:
+        config = json.load(configuracoes)
+
+    modo = config["modo"]
+
+except:
+    os.makedirs("Config", exist_ok=True)
+
+    config = {
+        "modo": "Themes/escuro.json",
+    }
+
+    with open("Config/config.json", "w") as configuracoes:
+        json.dump(config, configuracoes, indent=4)
+
+    modo = config["modo"]
+
 # Predefinições
 telaPrincipal = CTk()
 telaLargura = 700
@@ -65,7 +119,7 @@ telaPrincipal.title("Gerador de Referência ABNT")
 telaPrincipal.grid_rowconfigure(0, weight = 0) # Impede a expansão da linha 0
 telaPrincipal.grid_columnconfigure(1, weight = 1) # Permitir a expansão da coluna 1
 # telaPrincipal.iconphoto(True, CTkImage(Image.open("./Images/forma-de-meia-lua.png"), size=(26, 26)))
-set_appearance_mode("System")  # Modes: system (default), light, dark
+set_appearance_mode(modo)  # Modes: system (default), light, dark
 set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 
 # TODO Colocar uma maneira de gerar referencias impressas e referencias on-line
@@ -80,7 +134,7 @@ labelTitulo.grid(row = 0, column = 0, padx = 10, pady = 10, columnspan = 3)
 
 # Botão para troca de modo
 botaoModo = CTkButton(telaPrincipal, image = CTkImage(Image.open("./Images/forma-de-meia-lua.png"), size=(26, 26)),
-                      text = None, width = 10, height = 10, corner_radius = 10)
+                      text = None, width = 10, height = 10, corner_radius = 10, command=trocaTema)
 botaoModo.grid(row = 0, column = 2, padx = 10, pady = 10, sticky = "e")
 
 # Componentes do Título do Artigo
