@@ -131,7 +131,9 @@ labelTitulo = CTkLabel(telaPrincipal, text = "Gerador de Referência ABNT")
 labelTitulo.grid(row = 0, column = 0, padx = 10, pady = 10, columnspan = 3)
 
 # TODO Implementar a troca de modo escuro e claro salvando tudo em um json
-# TODO Na verdade python tem integração com SQL Local, posso fazer assim
+# TODO Na verdade python tem integração com SQL Local, posso fazer assim, chama sqlite
+# https://youtu.be/Mdg1D-Kdmrw
+# SQLITE https://youtu.be/jYUDi83tJXc?list=PLwsAoT89dh3pnuT7dGaG4vdxCpo5tJI8S
 
 # Botão para troca de modo
 botaoModo = CTkButton(telaPrincipal, image = CTkImage(Image.open("./Images/forma-de-meia-lua.png"), size=(26, 26)),
