@@ -5,14 +5,13 @@
 # https://youtu.be/5U-nBAfbSek
 
 # TODO Otimizar os imports, ou seja, importar somente o que for necessário de verdade
-
 from customtkinter import * #pip install customtkinter
 from PIL import Image
 from GerarReferencia import gerarReferencia
 import pyperclip #pip install pyperclip
 import webbrowser
-import json
 import os
+import sqlite3
 
 # Função de limpar as entradas
 def limpar():
@@ -63,53 +62,17 @@ def instagramYuri():
 
 # TODO Colocar um link para meu linkedin
 
-# TODO Arrumar essa função bateado na documentação
-# Função que aplica o novo tema
-def trocaTema():
-
-    tema = ["Themes/escuro.json", "Themes/claro.json"]
-
-    with open("Config/config.json", "r+") as configuracoes:
-        config = json.load(configuracoes)
-
-        modo = config["modo"]
-
-        try:
-            modo = tema[tema.index(modo) + 1]
-            print(tema.index(modo) + 1)
-        except:
-            modo = tema[0]
-
-        config["modo"] = modo
-
-        configuracoes.seek(0)
-        json.dump(config, configuracoes, indent=4)
-        configuracoes.truncate()
-
-        set_appearance_mode(modo)  # Modes: system (default), light, dark
-        # set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
-
-        print(modo)
+# TODO Python tem integração com SQL Local, posso fazer assim, chama sqlite
+# https://youtu.be/Mdg1D-Kdmrw
+# SQLITE https://youtu.be/jYUDi83tJXc?list=PLwsAoT89dh3pnuT7dGaG4vdxCpo5tJI8S
+# # Função que aplica o novo tema
+# def trocaTema():
+#     print("Troca Tema")
 
 # Carregando Configurações
-try:
-    with open("Config/config.json", "r") as configuracoes:
-        config = json.load(configuracoes)
+modo = "dark"
 
-    modo = config["modo"]
-
-except:
-    os.makedirs("Config", exist_ok=True)
-
-    config = {
-        "modo": "Themes/escuro.json",
-    }
-
-    with open("Config/config.json", "w") as configuracoes:
-        json.dump(config, configuracoes, indent=4)
-
-    modo = config["modo"]
-
+#TODO Deixar a tela dinâmica
 # Predefinições
 telaPrincipal = CTk()
 telaLargura = 700
@@ -117,7 +80,10 @@ telaAltura = 500
 telaPrincipal.geometry(f"{telaLargura}x{telaAltura}")
 telaPrincipal.title("Gerador de Referência ABNT")
 telaPrincipal.grid_rowconfigure(0, weight = 0) # Impede a expansão da linha 0
-telaPrincipal.grid_columnconfigure(1, weight = 1) # Permitir a expansão da coluna 1
+telaPrincipal.grid_rowconfigure(1, weight = 0) # Impede a expansão da linha 0
+telaPrincipal.grid_columnconfigure(0, weight = 1) # Permite a expansão da coluna 0
+telaPrincipal.grid_columnconfigure(1, weight = 1) # Permite a expansão da coluna 1
+telaPrincipal.grid_columnconfigure(2, weight = 1) # Permite a expansão da coluna 2
 # telaPrincipal.iconphoto(True, CTkImage(Image.open("./Images/forma-de-meia-lua.png"), size=(26, 26)))
 set_appearance_mode(modo)  # Modes: system (default), light, dark
 set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
@@ -130,59 +96,76 @@ set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 labelTitulo = CTkLabel(telaPrincipal, text = "Gerador de Referência ABNT")
 labelTitulo.grid(row = 0, column = 0, padx = 10, pady = 10, columnspan = 3)
 
-# TODO Implementar a troca de modo escuro e claro salvando tudo em um json
-# TODO Na verdade python tem integração com SQL Local, posso fazer assim, chama sqlite
-# https://youtu.be/Mdg1D-Kdmrw
-# SQLITE https://youtu.be/jYUDi83tJXc?list=PLwsAoT89dh3pnuT7dGaG4vdxCpo5tJI8S
+# # Botão para troca de modo
+# botaoModo = CTkButton(telaPrincipal, image = CTkImage(Image.open("./Images/forma-de-meia-lua.png"), size=(26, 26)),
+#                       text = None, width = 10, height = 10, corner_radius = 10, command=trocaTema)
+# botaoModo.grid(row = 0, column = 2, padx = 10, pady = 10, sticky = "e")
 
-# Botão para troca de modo
-botaoModo = CTkButton(telaPrincipal, image = CTkImage(Image.open("./Images/forma-de-meia-lua.png"), size=(26, 26)),
-                      text = None, width = 10, height = 10, corner_radius = 10, command=trocaTema)
-botaoModo.grid(row = 0, column = 2, padx = 10, pady = 10, sticky = "e")
+# Criação do TabView das Abas
 
-# Componentes do Título do Artigo
-labelTituloDoArtigo = CTkLabel(telaPrincipal, text = "Título do artigo:")
-labelTituloDoArtigo.grid(row = 1, column = 0, padx = 10, pady = 10)
-inputTituloDoArtigo = CTkEntry(telaPrincipal, placeholder_text = "Digite aqui")
-inputTituloDoArtigo.grid(row = 1, column = 1, columnspan = 2, padx = 10, pady = 10, sticky="nsew")
+tabviewAbas = CTkTabview(telaPrincipal)
+tabviewAbas.grid(row = 1, column = 0, padx = 10, pady = 10, columnspan = 3, sticky="nsew")
 
-# Componentes do Nome do Site
-labelNomeDoSite = CTkLabel(telaPrincipal, text="Nome do site:")
-labelNomeDoSite.grid(row = 2, column = 0, padx = 10, pady = 10)
-inputNomeDoSite = CTkEntry(telaPrincipal, placeholder_text = "Digite aqui")
-inputNomeDoSite.grid(row = 2, column = 1, columnspan = 2, padx = 10, pady = 10, sticky="nsew")
+tabviewAbas.add("Impresso")
+tabviewAbas.add("Digital")
 
-# Componentes do Ano de Publicação
-labelAnoPublicacao = CTkLabel(telaPrincipal, text="Ano da publicação:")
-labelAnoPublicacao.grid(row = 3, column = 0, padx = 10, pady = 10)
-inputAnoPublicacao = CTkEntry(telaPrincipal, placeholder_text = "Digite aqui")
-inputAnoPublicacao.grid(row = 3, column = 1, columnspan = 2, padx = 10, pady = 10, sticky="nsew")
+# Na aba do Referêncial Impresso
 
-# Componentes do Link
-labelLink = CTkLabel(telaPrincipal, text="Link do artigo:")
-labelLink.grid(row = 4, column = 0, padx = 10, pady = 10)
-inputLink = CTkEntry(telaPrincipal, placeholder_text = "https://exemplo.com.br")
-inputLink.grid(row = 4, column = 1, columnspan = 2, padx = 10, pady = 10, sticky="nsew")
+tabviewAbas.tab("Impresso").grid_columnconfigure(1, weight=1)
 
-# Componentes do Autor
+# TODO Aba do Referêncial Impresso
+
+# Na aba do Referêncial Digital
+
+tabviewAbas.tab("Digital").grid_columnconfigure(1, weight=1)
+
+# # Componentes do Título do Artigo
+labelTituloDoArtigo = CTkLabel(tabviewAbas.tab("Digital"), text = "Título do artigo:")
+labelTituloDoArtigo.grid(row = 0, column = 0, padx = 10, pady = 10)
+inputTituloDoArtigo = CTkEntry(tabviewAbas.tab("Digital"), placeholder_text = "Digite aqui")
+inputTituloDoArtigo.grid(row = 0, column = 1, padx = 10, pady = 10, columnspan = 2, sticky = "nsew")
+
+# # Componentes do Nome do Site
+labelNomeDoSite = CTkLabel(tabviewAbas.tab("Digital"), text="Nome do site:")
+labelNomeDoSite.grid(row = 1, column = 0, padx = 10, pady = 10)
+inputNomeDoSite = CTkEntry(tabviewAbas.tab("Digital"), placeholder_text = "Digite aqui")
+inputNomeDoSite.grid(row = 1, column = 1, columnspan = 2, padx = 10, pady = 10, sticky="nsew")
+
+# # Componentes do Ano de Publicação
+labelAnoPublicacao = CTkLabel(tabviewAbas.tab("Digital"), text="Ano da publicação:")
+labelAnoPublicacao.grid(row = 2, column = 0, padx = 10, pady = 10)
+inputAnoPublicacao = CTkEntry(tabviewAbas.tab("Digital"), placeholder_text = "Digite aqui")
+inputAnoPublicacao.grid(row = 2, column = 1, columnspan = 2, padx = 10, pady = 10, sticky="nsew")
+
+# # Componentes do Link
+labelLink = CTkLabel(tabviewAbas.tab("Digital"), text="Link do artigo:")
+labelLink.grid(row = 3, column = 0, padx = 10, pady = 10)
+inputLink = CTkEntry(tabviewAbas.tab("Digital"), placeholder_text = "https://exemplo.com.br")
+inputLink.grid(row = 3, column = 1, columnspan = 2, padx = 10, pady = 10, sticky="nsew")
+
+# # Componentes do Autor
 autores = 0
-labelAutor1 = CTkLabel(telaPrincipal, text="Nome do autor(a):")
-labelAutor1.grid(row = 5, column = 0, padx = 10, pady = 10)
-inputAutor1 = CTkEntry(telaPrincipal, placeholder_text = "SOBRENOME, Nome")
-inputAutor1.grid(row = 5, column = 1, columnspan = 2, padx = 10, pady = 10, sticky="nsew")
+labelAutor1 = CTkLabel(tabviewAbas.tab("Digital"), text="Nome do autor(a):")
+labelAutor1.grid(row = 4, column = 0, padx = 10, pady = 10)
+inputAutor1 = CTkEntry(tabviewAbas.tab("Digital"), placeholder_text = "SOBRENOME, Nome")
+inputAutor1.grid(row = 4, column = 1, columnspan = 2, padx = 10, pady = 10, sticky="nsew")
+
+# Fim tabView das Abas
 
 # TODO Colocar uma forma de ter mais de um autor
 # Posso fazer tipo um botão que adiciona e subtrai pra dizer a quantidade
+
+
 
 # Componente do Botão
 botaoGerar = CTkButton(telaPrincipal, text="Gerar referência", command=botaoGerarOnClick)
 botaoGerar.grid(row = 6, column = 0, columnspan = 3, padx = 10, pady = 10, sticky="n")
 
 # Área da resposta
+telaPrincipal.grid_rowconfigure(7, weight = 1)
 textReferencia = CTkTextbox(telaPrincipal, corner_radius=10)
 textReferencia.grid(row = 7, column = 0, columnspan = 3, padx = 10, pady = 10, sticky = "nsew")
 textReferencia.configure(state = "disabled")
-telaPrincipal.grid_rowconfigure(7, weight = 1)
 
 # Botão do Desenvolvedor
 botaoYuri = CTkButton(telaPrincipal, text = "@yuridsduarte", fg_color = "transparent", hover = False, width = 0, command = instagramYuri)
