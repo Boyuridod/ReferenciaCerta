@@ -91,6 +91,7 @@ set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 # TODO Colocar uma maneira de gerar referencias impressas e referencias on-line
 # Existe uma diferença em cada uma delas
 # Vide: https://normas-abnt.espm.br/index.php?title=Um_autor
+# https://normas-abnt.espm.br/index.php?title=Referência_(obrigatório)
 
 # Título
 labelTitulo = CTkLabel(telaPrincipal, text = "Gerador de Referência ABNT")
@@ -159,17 +160,17 @@ inputAutor1.grid(row = 4, column = 1, columnspan = 2, padx = 10, pady = 10, stic
 
 # Componente do Botão
 botaoGerar = CTkButton(telaPrincipal, text="Gerar referência", command=botaoGerarOnClick)
-botaoGerar.grid(row = 6, column = 0, columnspan = 3, padx = 10, pady = 10, sticky="n")
+botaoGerar.grid(row = 3, column = 0, columnspan = 3, padx = 10, pady = 10, sticky="n")
 
 # Área da resposta
-telaPrincipal.grid_rowconfigure(7, weight = 1)
+telaPrincipal.grid_rowconfigure(4, weight = 1)
 textReferencia = CTkTextbox(telaPrincipal, corner_radius=10)
-textReferencia.grid(row = 7, column = 0, columnspan = 3, padx = 10, pady = 10, sticky = "nsew")
+textReferencia.grid(row = 4, column = 0, columnspan = 3, padx = 10, pady = 10, sticky = "nsew")
 textReferencia.configure(state = "disabled")
 
 # Botão do Desenvolvedor
 botaoYuri = CTkButton(telaPrincipal, text = "@yuridsduarte", fg_color = "transparent", hover = False, width = 0, command = instagramYuri)
-botaoYuri.grid(row = 8, column = 2, padx = 10, sticky = "e")
+botaoYuri.grid(row = 5, column = 2, padx = 10, sticky = "e")
 
 #Chamar a Tela
 telaPrincipal.mainloop()
