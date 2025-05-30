@@ -92,7 +92,7 @@ telaPrincipal = CTk()
 telaLargura = 700
 telaAltura = 500
 telaPrincipal.geometry(f"{telaLargura}x{telaAltura}")
-telaPrincipal.title("Gerador de Referência ABNT")
+telaPrincipal.title("Referência Certa")
 telaPrincipal.grid_rowconfigure(0, weight=0)
 telaPrincipal.grid_rowconfigure(1, weight=0)
 telaPrincipal.grid_columnconfigure(0, weight=1)
