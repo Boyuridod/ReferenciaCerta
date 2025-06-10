@@ -111,7 +111,6 @@ def instagramYuri():
     webbrowser.open("https://www.instagram.com/yuridsduarte/")
 
 modo = "dark"
-
 # Predefinições
 telaPrincipal = CTk()
 telaLargura = 700
