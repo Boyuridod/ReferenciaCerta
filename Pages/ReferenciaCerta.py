@@ -110,6 +110,7 @@ def botaoGerarOnClick(pagina):
 def instagramYuri():
     webbrowser.open("https://www.instagram.com/yuridsduarte/")
 
+# TODO Tamanho automático de tela
 modo = "dark"
 # Predefinições
 telaPrincipal = CTk()
