@@ -1,6 +1,6 @@
 # TODO Otimizar os imports, ou seja, importar somente o que for necessário de verdade
 from customtkinter import *
-from PIL import Image
+# from PIL import Image
 from GerarReferencia import gerarReferenciaDigital, gerarReferenciaImpressa
 import pyperclip
 import webbrowser
@@ -113,18 +113,26 @@ def instagramYuri():
 # TODO Tamanho automático de tela
 modo = "dark"
 # Predefinições
-telaPrincipal = CTk()
+ReferenciaCerta = CTk()
 telaLargura = 700
 telaAltura = 500
-telaPrincipal.geometry(f"{telaLargura}x{telaAltura}")
-telaPrincipal.title("Referência Certa")
+ReferenciaCerta.geometry(f"{telaLargura}x{telaAltura}")
+ReferenciaCerta.title("Referência Certa")
+ReferenciaCerta.grid_rowconfigure(0, weight=0)
+ReferenciaCerta.grid_rowconfigure(1, weight=0)
+ReferenciaCerta.grid_columnconfigure(0, weight=1)
+ReferenciaCerta.grid_columnconfigure(1, weight=1)
+ReferenciaCerta.grid_columnconfigure(2, weight=1)
+set_appearance_mode(modo)
+set_default_color_theme("blue")
+
+telaPrincipal = CTkScrollableFrame(ReferenciaCerta, telaLargura, telaAltura)
+telaPrincipal.pack(padx=10, pady=10, fill="both", expand=True)
 telaPrincipal.grid_rowconfigure(0, weight=0)
 telaPrincipal.grid_rowconfigure(1, weight=0)
 telaPrincipal.grid_columnconfigure(0, weight=1)
 telaPrincipal.grid_columnconfigure(1, weight=1)
 telaPrincipal.grid_columnconfigure(2, weight=1)
-set_appearance_mode(modo)
-set_default_color_theme("blue")
 
 labelTitulo = CTkLabel(telaPrincipal, text="Gerador de Referência ABNT")
 labelTitulo.grid(row=0, column=0, padx=10, pady=10, columnspan=3)
@@ -200,4 +208,4 @@ botaoYuri = CTkButton(telaPrincipal, text="@yuridsduarte", fg_color="transparent
 botaoYuri.grid(row=5, column=2, padx=10, sticky="e")
 
 # Chamar a Tela
-telaPrincipal.mainloop()
+ReferenciaCerta.mainloop()
