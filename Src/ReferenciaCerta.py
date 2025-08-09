@@ -1,17 +1,15 @@
-# TODO Otimizar os imports, ou seja, importar somente o que for necessário de verdade
 from customtkinter import *
-# from PIL import Image
+from PIL import Image
 from GerarReferencia import gerarReferenciaDigital, gerarReferenciaImpressa
 import pyperclip
 import webbrowser
 import os
 import sqlite3
 
-# Listas separadas para autores de cada aba (agora guardam (label, entry))
 autores_digital = []
 autores_impresso = []
+todasReferencias = []
 
-# Função que carrega os autores
 def labelAutores(pagina, lista_autores):
     linha = len(lista_autores) + 5
     labelAutor = CTkLabel(tabviewAbas.tab(pagina), text=f"Nome do autor(a) {linha - 4}:")
@@ -23,7 +21,6 @@ def labelAutores(pagina, lista_autores):
 
     verificaAutor(inputAutor, pagina, lista_autores)
 
-# Verifica se autor foi preenchido para adicionar novos até 4
 def verificaAutor(inputAutor, pagina, lista_autores):
     def verificar():
         if inputAutor.get().strip() != "":
@@ -34,7 +31,6 @@ def verificaAutor(inputAutor, pagina, lista_autores):
 
     verificar()
 
-# Remove autores extras e limpa o primeiro
 def limparAutores(pagina):
     for i, (label, entry) in enumerate(autores_digital):
         if i == 0:
@@ -54,7 +50,6 @@ def limparAutores(pagina):
 
     labelAutores(pagina, autores_digital if pagina == "Digital" else autores_impresso)
 
-# Função de limpar as entradas
 def limpar(pagina="Impresso"):
     limparAutores(pagina)
     inputNomeDoLivro.delete(0, "end")
@@ -68,7 +63,6 @@ def limpar(pagina="Impresso"):
     inputAnoPublicacao.delete(0, "end")
     inputLink.delete(0, "end")
 
-# Função do botão "Gerar referência"
 def botaoGerarOnClick(pagina):
     if(pagina == "Impresso"):
         nomeDoLivro = inputNomeDoLivro.get()
@@ -95,8 +89,13 @@ def botaoGerarOnClick(pagina):
 
         referencia = gerarReferenciaDigital(autores, titulo, nomeDoSite, anoPublicacao, link)
 
+    todasReferencias.append(referencia)
+    todasReferencias.sort()
+
     textReferencia.configure(state="normal")
-    textReferencia.insert("end", referencia + "\n")
+    textReferencia.delete("0.0", "end")
+    for i in todasReferencias:
+        textReferencia.insert("end", i + "\n\n")
     textReferencia.configure(state="disabled")
 
     try:
@@ -110,32 +109,30 @@ def botaoGerarOnClick(pagina):
 def instagramYuri():
     webbrowser.open("https://www.instagram.com/yuridsduarte/")
 
-# TODO Tamanho automático de tela
 modo = "dark"
-# Predefinições
 ReferenciaCerta = CTk()
 telaLargura = 700
 telaAltura = 500
 ReferenciaCerta.geometry(f"{telaLargura}x{telaAltura}")
 ReferenciaCerta.title("Referência Certa")
-ReferenciaCerta.grid_rowconfigure(0, weight=0)
-ReferenciaCerta.grid_rowconfigure(1, weight=0)
+ReferenciaCerta.grid_rowconfigure(1, weight=1)
 ReferenciaCerta.grid_columnconfigure(0, weight=1)
-ReferenciaCerta.grid_columnconfigure(1, weight=1)
-ReferenciaCerta.grid_columnconfigure(2, weight=1)
 set_appearance_mode(modo)
 set_default_color_theme("blue")
 
+labelTitulo = CTkLabel(ReferenciaCerta, text="Gerador de Referência ABNT")
+labelTitulo.grid(row=0, column=0, padx=10, pady=5, columnspan=2, sticky="nsew")
+
+# botaoModo = CTkButton(ReferenciaCerta, width = 10, height = 10, text = "Botão", command=)
+# botaoModo.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
+
 telaPrincipal = CTkScrollableFrame(ReferenciaCerta, telaLargura, telaAltura)
-telaPrincipal.pack(padx=10, pady=10, fill="both", expand=True)
+telaPrincipal.grid(row=1, column=0, padx=10, pady=10, columnspan=2, sticky="nsew")
 telaPrincipal.grid_rowconfigure(0, weight=0)
 telaPrincipal.grid_rowconfigure(1, weight=0)
 telaPrincipal.grid_columnconfigure(0, weight=1)
 telaPrincipal.grid_columnconfigure(1, weight=1)
 telaPrincipal.grid_columnconfigure(2, weight=1)
-
-labelTitulo = CTkLabel(telaPrincipal, text="Gerador de Referência ABNT")
-labelTitulo.grid(row=0, column=0, padx=10, pady=10, columnspan=3)
 
 tabviewAbas = CTkTabview(telaPrincipal)
 tabviewAbas.grid(row=1, column=0, padx=10, pady=10, columnspan=3, sticky="nsew")
@@ -207,5 +204,4 @@ textReferencia.configure(state="disabled")
 botaoYuri = CTkButton(telaPrincipal, text="@yuridsduarte", fg_color="transparent", hover=False, width=0, command=instagramYuri)
 botaoYuri.grid(row=5, column=2, padx=10, sticky="e")
 
-# Chamar a Tela
 ReferenciaCerta.mainloop()
