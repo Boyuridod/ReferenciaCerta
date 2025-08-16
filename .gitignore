@@ -4,3 +4,5 @@ build/
 GeradorDeReferenciaABNT.spec
 __pycache__/
 .vscode
+dist.txt
+/dist
