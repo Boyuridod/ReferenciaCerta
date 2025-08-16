@@ -71,9 +71,15 @@ def botaoGerarOnClick(pagina):
         anoPublicacaoImpresso = inputAnoPublicacaoImpresso.get()
         paginas = inputPaginas.get()
         autores = ""
-        for entry in autores_impresso:
-            autor = entry[1].get()
-            autores += f"{autor} "
+        if(len(autores_impresso) < 4):
+            for entry in autores_impresso:
+                autor = entry[1].get()
+                autores += f"{autor}, "
+
+            autores = autores[:-4]
+
+        else:
+            autores = f"{autores_impresso[0][1].get()}, et al"
 
         referencia = gerarReferenciaImpressa(autores, nomeDoLivro, edicaoDoLivro, editora, anoPublicacaoImpresso, paginas)
 
@@ -83,9 +89,15 @@ def botaoGerarOnClick(pagina):
         anoPublicacao = inputAnoPublicacao.get()
         link = inputLink.get()
         autores = ""
-        for entry in autores_digital:
-            autor = entry[1].get()
-            autores += f"{autor} "
+        if(len(autores_digital) < 4):
+            for entry in autores_digital:
+                autor = entry[1].get()
+                autores += f"{autor}, "
+
+            autores = autores[:-4]
+
+        else:
+            autores = f"{autores_digital[0][1].get()}, et al"
 
         referencia = gerarReferenciaDigital(autores, titulo, nomeDoSite, anoPublicacao, link)
 

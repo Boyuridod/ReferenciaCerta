@@ -14,17 +14,15 @@ def gerarReferenciaDigital(autores, tituloDoArtigo, nomeDoSite, ano, link):
     data = str(date.today().day) + " " + getMes(date.today().month - 1) + " " + str(date.today().year)
 
     # Criando a referência perfeita
-    referencia = autores + ". " + tituloDoArtigo + ". " + nomeDoSite + ", " + ano + ". " + "Disponível em: " + link + ". Acesso em: " + data + "."
+    referencia = f"{autores}. {tituloDoArtigo}. {nomeDoSite}, {ano}. Disponível em: {link}. Acesso em: {data}."
 
     # Retorno da referência
     return referencia
 
 def gerarReferenciaImpressa(autores, nomeDoLivro, edicaoDoLivro, editora, anoPublicacao, paginas):
-    # Gerando a data
-    data = str(date.today().day) + " " + getMes(date.today().month - 1) + " " + str(date.today().year)
 
     # Criando a referência perfeita
-    referencia = autores + ". " + nomeDoLivro + ". " + edicaoDoLivro + ". ed. " + editora + ", " + anoPublicacao + "p." + paginas
+    referencia = f"{autores}. {nomeDoLivro}. {edicaoDoLivro}. ed. {editora}, {anoPublicacao}p.{paginas}"
 
     # Retorno da referência
     return referencia
