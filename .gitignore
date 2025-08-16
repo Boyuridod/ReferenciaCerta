@@ -1,7 +1,7 @@
 .gitignore
 .gitattributes
 build/
-GeradorDeReferenciaABNT.spec
+*.spec
 __pycache__/
 .vscode
 dist.txt
