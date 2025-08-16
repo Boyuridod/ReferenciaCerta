@@ -110,11 +110,11 @@ def botaoGerarOnClick(pagina):
         textReferencia.insert("end", i + "\n\n")
     textReferencia.configure(state="disabled")
 
-    try:
-        pyperclip.copy(referencia)
-        copiado = "Copiado para a Área de Transferência!"
-    except:
-        copiado = "Não foi possível copiar para sua área de transferência. Tente copiar manualmente."
+    # try:
+    #     pyperclip.copy(referencia)
+    #     copiado = "Copiado para a Área de Transferência!"
+    # except:
+    #     copiado = "Não foi possível copiar para sua área de transferência. Tente copiar manualmente."
 
     limpar(pagina)
 

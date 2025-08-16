@@ -22,7 +22,7 @@ def gerarReferenciaDigital(autores, tituloDoArtigo, nomeDoSite, ano, link):
 def gerarReferenciaImpressa(autores, nomeDoLivro, edicaoDoLivro, editora, anoPublicacao, paginas):
 
     # Criando a referência perfeita
-    referencia = f"{autores}. {nomeDoLivro}. {edicaoDoLivro}. ed. {editora}, {anoPublicacao}p.{paginas}"
+    referencia = f"{autores}. {nomeDoLivro}. {edicaoDoLivro}. ed. {editora}, {anoPublicacao}. p.{paginas}"
 
     # Retorno da referência
     return referencia
