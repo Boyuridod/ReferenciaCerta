@@ -1,5 +1,6 @@
 customtkinter
 pyperclip
 Pillow
+pyinstaller
 
 # & D:/DesenvolvimentoIDE/Python/python.exe -m pip install -r requirements.txt
