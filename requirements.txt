@@ -1,6 +1,9 @@
-customtkinter
-pyperclip
-Pillow
-pyinstaller
-
-# & D:/DesenvolvimentoIDE/Python/python.exe -m pip install -r requirements.txt
+altgraph==0.17.4
+customtkinter==5.2.2
+darkdetect==0.8.0
+packaging==25.0
+pillow==12.0.0
+pyinstaller==6.16.0
+pyinstaller-hooks-contrib==2025.9
+pyperclip==1.11.0
+setuptools==80.9.0
