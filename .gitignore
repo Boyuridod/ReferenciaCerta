@@ -7,3 +7,4 @@ __pycache__/
 dist.txt
 /dist
 /teste
+venv/
