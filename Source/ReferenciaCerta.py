@@ -10,9 +10,27 @@ import sqlite3
 autores_digital = []
 autores_impresso = []
 todasReferencias = []
+modo = 0
+modos = ["black", "light", "Themes/rose.json", "Themes/red.json"]
+imagemModo = ["Public/Assets/forma-de-meia-lua.png", "Public/Assets/brilho-do-sol.png", "Public/Assets/flor.png", "Public/Assets/gota-de-agua.png"]
 
 vermelho = "#ED2100"
 vinho = "#B41A02"
+
+def trocaModo():
+    global modo
+
+    modo += 1
+
+    #if(modo == 4):
+    if(modo == 2):
+        modo = 0
+
+    set_appearance_mode(modos[modo])
+
+    botaoModo.configure(text= modo)
+
+    return modo
 
 def labelAutores(pagina, lista_autores):
     linha = len(lista_autores) + 5
@@ -143,25 +161,23 @@ def apagarReferencias():
 def instagramYuri():
     webbrowser.open("https://www.instagram.com/yuridsduarte/")
 
-modo = "dark"
 ReferenciaCerta = CTk()
 telaLargura = ReferenciaCerta.winfo_screenwidth()
 telaAltura = ReferenciaCerta.winfo_screenheight()
 largura = ceil(telaLargura * 0.50)
 altura = ceil(telaAltura * 0.60)
-print([telaAltura, telaLargura], [altura, largura])
 ReferenciaCerta.geometry(f"{largura}x{altura}")
 ReferenciaCerta.title("Referência Certa")
 ReferenciaCerta.grid_rowconfigure(1, weight=1)
 ReferenciaCerta.grid_columnconfigure(0, weight=1)
-set_appearance_mode(modo)
+set_appearance_mode(modos[modo])
 set_default_color_theme("blue")
 
 labelTitulo = CTkLabel(ReferenciaCerta, text="Gerador de Referência ABNT")
 labelTitulo.grid(row=0, column=0, padx=10, pady=5, columnspan=2, sticky="nsew")
 
-# botaoModo = CTkButton(ReferenciaCerta, width = 10, height = 10, text = "Botão", command=)
-# botaoModo.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
+botaoModo = CTkButton(ReferenciaCerta, width = 10, height = 10, text = modo, command=trocaModo)
+botaoModo.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
 
 telaPrincipal = CTkScrollableFrame(ReferenciaCerta, telaLargura, telaAltura)
 telaPrincipal.grid(row=1, column=0, padx=10, pady=10, columnspan=2, sticky="nsew")
