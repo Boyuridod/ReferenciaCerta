@@ -3,6 +3,7 @@ from PIL import Image
 from GerarReferencia import gerarReferenciaDigital, gerarReferenciaImpressa
 import pyperclip
 import webbrowser
+from math import ceil
 import os
 import sqlite3
 
@@ -144,9 +145,12 @@ def instagramYuri():
 
 modo = "dark"
 ReferenciaCerta = CTk()
-telaLargura = 700
-telaAltura = 500
-ReferenciaCerta.geometry(f"{telaLargura}x{telaAltura}")
+telaLargura = ReferenciaCerta.winfo_screenwidth()
+telaAltura = ReferenciaCerta.winfo_screenheight()
+largura = ceil(telaLargura * 0.50)
+altura = ceil(telaAltura * 0.60)
+print([telaAltura, telaLargura], [altura, largura])
+ReferenciaCerta.geometry(f"{largura}x{altura}")
 ReferenciaCerta.title("Referência Certa")
 ReferenciaCerta.grid_rowconfigure(1, weight=1)
 ReferenciaCerta.grid_columnconfigure(0, weight=1)
