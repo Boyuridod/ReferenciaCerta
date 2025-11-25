@@ -1,0 +1,1 @@
+pyinstaller --onefile --windowed --icon="Public\Icons\Logo quadrada.ico" "Source\ReferenciaCerta.py"
