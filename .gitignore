@@ -5,4 +5,5 @@ __pycache__/
 .vscode
 dist.txt
 /dist
-/venv
+/teste
+venv/

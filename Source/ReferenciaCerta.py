@@ -3,12 +3,34 @@ from PIL import Image
 from GerarReferencia import gerarReferenciaDigital, gerarReferenciaImpressa
 import pyperclip
 import webbrowser
+from math import ceil
 import os
 import sqlite3
 
 autores_digital = []
 autores_impresso = []
 todasReferencias = []
+modo = 0
+modos = ["black", "light", "Themes/rose.json", "Themes/red.json"]
+imagemModo = ["Public/Assets/forma-de-meia-lua.png", "Public/Assets/brilho-do-sol.png", "Public/Assets/flor.png", "Public/Assets/gota-de-agua.png"]
+
+vermelho = "#ED2100"
+vinho = "#B41A02"
+
+def trocaModo():
+    global modo
+
+    modo += 1
+
+    #if(modo == 4):
+    if(modo == 2):
+        modo = 0
+
+    set_appearance_mode(modos[modo])
+
+    botaoModo.configure(text= modo)
+
+    return modo
 
 def labelAutores(pagina, lista_autores):
     linha = len(lista_autores) + 5
@@ -64,6 +86,8 @@ def limpar(pagina="Impresso"):
     inputLink.delete(0, "end")
 
 def botaoGerarOnClick(pagina):
+    gerar = True
+
     if(pagina == "Impresso"):
         nomeDoLivro = inputNomeDoLivro.get()
         edicaoDoLivro = inputEdicaoDoLivro.get()
@@ -110,38 +134,56 @@ def botaoGerarOnClick(pagina):
         textReferencia.insert("end", i + "\n\n")
     textReferencia.configure(state="disabled")
 
-    # try:
-    #     pyperclip.copy(referencia)
-    #     copiado = "Copiado para a Área de Transferência!"
-    # except:
-    #     copiado = "Não foi possível copiar para sua área de transferência. Tente copiar manualmente."
-
     limpar(pagina)
+
+def copiarReferencias():
+    referencia = textReferencia.get("0.0", "end")[0:-3]
+
+    try:
+        pyperclip.copy(referencia)
+        copiado = "Copiado para a Área de Transferência!"
+    except Exception as e:
+        copiado = "Não foi possível copiar para sua área de transferência. Tente copiar manualmente." + e
+
+    # TODO Avisar o usuário do certo e do erro
+
+    print(copiado)
+
+def apagarReferencias():
+    textReferencia.configure(state="normal")
+    textReferencia.delete("0.0", "end")
+    textReferencia.configure(state="disabled")
+
+    # TODO Guardar no banco as antigas caso o usuario queira cancelar
+
+    todasReferencias.clear()
 
 def instagramYuri():
     webbrowser.open("https://www.instagram.com/yuridsduarte/")
 
-modo = "dark"
 ReferenciaCerta = CTk()
-telaLargura = 700
-telaAltura = 500
-ReferenciaCerta.geometry(f"{telaLargura}x{telaAltura}")
+telaLargura = ReferenciaCerta.winfo_screenwidth()
+telaAltura = ReferenciaCerta.winfo_screenheight()
+largura = ceil(telaLargura * 0.50)
+altura = ceil(telaAltura * 0.60)
+ReferenciaCerta.geometry(f"{largura}x{altura}")
 ReferenciaCerta.title("Referência Certa")
 ReferenciaCerta.grid_rowconfigure(1, weight=1)
 ReferenciaCerta.grid_columnconfigure(0, weight=1)
-set_appearance_mode(modo)
+set_appearance_mode(modos[modo])
 set_default_color_theme("blue")
 
 labelTitulo = CTkLabel(ReferenciaCerta, text="Gerador de Referência ABNT")
 labelTitulo.grid(row=0, column=0, padx=10, pady=5, columnspan=2, sticky="nsew")
 
-# botaoModo = CTkButton(ReferenciaCerta, width = 10, height = 10, text = "Botão", command=)
-# botaoModo.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
+botaoModo = CTkButton(ReferenciaCerta, width = 10, height = 10, text = modo, command=trocaModo)
+botaoModo.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
 
 telaPrincipal = CTkScrollableFrame(ReferenciaCerta, telaLargura, telaAltura)
 telaPrincipal.grid(row=1, column=0, padx=10, pady=10, columnspan=2, sticky="nsew")
 telaPrincipal.grid_rowconfigure(0, weight=0)
 telaPrincipal.grid_rowconfigure(1, weight=0)
+telaPrincipal.grid_rowconfigure(4, weight=1)
 telaPrincipal.grid_columnconfigure(0, weight=1)
 telaPrincipal.grid_columnconfigure(1, weight=1)
 telaPrincipal.grid_columnconfigure(2, weight=1)
@@ -208,12 +250,17 @@ labelAutores("Digital", autores_digital)
 botaoGerar = CTkButton(telaPrincipal, text="Gerar referência", command=lambda: botaoGerarOnClick(str(tabviewAbas.get())))
 botaoGerar.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="n")
 
-telaPrincipal.grid_rowconfigure(4, weight=1)
 textReferencia = CTkTextbox(telaPrincipal, corner_radius=10)
 textReferencia.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 textReferencia.configure(state="disabled")
 
+botaoCopiar = CTkButton(telaPrincipal, text="Copiar", command=copiarReferencias)
+botaoCopiar.grid(row=5, column=0, padx=10, sticky="w")
+
+botaoCopiar = CTkButton(telaPrincipal, text="Apagar", command=apagarReferencias, fg_color=vermelho, hover_color=vinho)
+botaoCopiar.grid(row=5, column=2, padx=10, sticky="e")
+
 botaoYuri = CTkButton(telaPrincipal, text="@yuridsduarte", fg_color="transparent", hover=False, width=0, command=instagramYuri)
-botaoYuri.grid(row=5, column=2, padx=10, sticky="e")
+botaoYuri.grid(row=6, column=2, padx=10, sticky="e")
 
 ReferenciaCerta.mainloop()
