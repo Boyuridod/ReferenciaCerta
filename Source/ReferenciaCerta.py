@@ -176,8 +176,8 @@ set_default_color_theme("blue")
 labelTitulo = CTkLabel(ReferenciaCerta, text="Gerador de Referência ABNT")
 labelTitulo.grid(row=0, column=0, padx=10, pady=5, columnspan=2, sticky="nsew")
 
-botaoModo = CTkButton(ReferenciaCerta, width = 10, height = 10, text = modo, command=trocaModo)
-botaoModo.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
+# botaoModo = CTkButton(ReferenciaCerta, width = 10, height = 10, text = modo, command=trocaModo)
+# botaoModo.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
 
 telaPrincipal = CTkScrollableFrame(ReferenciaCerta, telaLargura, telaAltura)
 telaPrincipal.grid(row=1, column=0, padx=10, pady=10, columnspan=2, sticky="nsew")
