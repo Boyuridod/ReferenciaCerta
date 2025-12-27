@@ -1,4 +1,4 @@
-from customtkinter import *
+import customtkinter as ctk
 from PIL import Image
 from GerarReferencia import gerarReferenciaDigital, gerarReferenciaImpressa
 import pyperclip
@@ -11,8 +11,9 @@ autores_digital = []
 autores_impresso = []
 todasReferencias = []
 modo = 0
-modos = ["black", "light", "Themes/rose.json", "Themes/red.json"]
-imagemModo = ["Public/Assets/forma-de-meia-lua.png", "Public/Assets/brilho-do-sol.png", "Public/Assets/flor.png", "Public/Assets/gota-de-agua.png"]
+caminhoModo = ["../themes/escuro.json", "../themes/claro.json", "../themes/rose.json", "../themes/red.json"]
+#TODO Trocar para SVG
+imagemModo = ["../public/assets/forma-de-meia-lua.png", "../public/assets/brilho-do-sol.png", "../public/assets/flor.png", "../public/assets/gota-de-agua.png"]
 
 vermelho = "#ED2100"
 vinho = "#B41A02"
@@ -22,21 +23,20 @@ def trocaModo():
 
     modo += 1
 
-    #if(modo == 4):
-    if(modo == 2):
+    if(modo == 4):
         modo = 0
 
-    set_appearance_mode(modos[modo])
+    ctk.set_default_color_theme(caminhoModo[modo])
 
-    botaoModo.configure(text= modo)
+    botaoModo.configure(text=str(modo))
 
     return modo
 
 def labelAutores(pagina, lista_autores):
     linha = len(lista_autores) + 5
-    labelAutor = CTkLabel(tabviewAbas.tab(pagina), text=f"Nome do autor(a) {linha - 4}:")
+    labelAutor = ctk.CTkLabel(tabviewAbas.tab(pagina), text=f"Nome do autor(a) {linha - 4}:")
     labelAutor.grid(row=linha, column=0, padx=10, pady=10)
-    inputAutor = CTkEntry(tabviewAbas.tab(pagina), placeholder_text="SOBRENOME, Nome")
+    inputAutor = ctk.CTkEntry(tabviewAbas.tab(pagina), placeholder_text="SOBRENOME, Nome")
     inputAutor.grid(row=linha, column=1, columnspan=2, padx=10, pady=10, sticky="nsew")
 
     lista_autores.append((labelAutor, inputAutor))
@@ -161,7 +161,9 @@ def apagarReferencias():
 def instagramYuri():
     webbrowser.open("https://www.instagram.com/yuridsduarte/")
 
-ReferenciaCerta = CTk()
+ctk.set_appearance_mode("dark") 
+ctk.set_default_color_theme(caminhoModo[modo])
+ReferenciaCerta = ctk.CTk()
 telaLargura = ReferenciaCerta.winfo_screenwidth()
 telaAltura = ReferenciaCerta.winfo_screenheight()
 largura = ceil(telaLargura * 0.50)
@@ -170,16 +172,14 @@ ReferenciaCerta.geometry(f"{largura}x{altura}")
 ReferenciaCerta.title("Referência Certa")
 ReferenciaCerta.grid_rowconfigure(1, weight=1)
 ReferenciaCerta.grid_columnconfigure(0, weight=1)
-set_appearance_mode(modos[modo])
-set_default_color_theme("blue")
 
-labelTitulo = CTkLabel(ReferenciaCerta, text="Gerador de Referência ABNT")
+labelTitulo = ctk.CTkLabel(ReferenciaCerta, text="Gerador de Referência ABNT")
 labelTitulo.grid(row=0, column=0, padx=10, pady=5, columnspan=2, sticky="nsew")
 
-botaoModo = CTkButton(ReferenciaCerta, width = 10, height = 10, text = modo, command=trocaModo)
+botaoModo = ctk.CTkButton(ReferenciaCerta, width = 10, height = 10, text = str(modo), command=trocaModo)
 botaoModo.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
 
-telaPrincipal = CTkScrollableFrame(ReferenciaCerta, telaLargura, telaAltura)
+telaPrincipal = ctk.CTkScrollableFrame(ReferenciaCerta, telaLargura, telaAltura)
 telaPrincipal.grid(row=1, column=0, padx=10, pady=10, columnspan=2, sticky="nsew")
 telaPrincipal.grid_rowconfigure(0, weight=0)
 telaPrincipal.grid_rowconfigure(1, weight=0)
@@ -188,7 +188,7 @@ telaPrincipal.grid_columnconfigure(0, weight=1)
 telaPrincipal.grid_columnconfigure(1, weight=1)
 telaPrincipal.grid_columnconfigure(2, weight=1)
 
-tabviewAbas = CTkTabview(telaPrincipal)
+tabviewAbas = ctk.CTkTabview(telaPrincipal)
 tabviewAbas.grid(row=1, column=0, padx=10, pady=10, columnspan=3, sticky="nsew")
 
 tabviewAbas.add("Impresso")
@@ -196,71 +196,71 @@ tabviewAbas.add("Digital")
 
 tabviewAbas.tab("Impresso").grid_columnconfigure(1, weight=1)
 
-labelNomeDoLivro = CTkLabel(tabviewAbas.tab("Impresso"), text="Nome do livro:")
+labelNomeDoLivro = ctk.CTkLabel(tabviewAbas.tab("Impresso"), text="Nome do livro:")
 labelNomeDoLivro.grid(row=0, column=0, padx=10, pady=10)
-inputNomeDoLivro = CTkEntry(tabviewAbas.tab("Impresso"), placeholder_text="Digite aqui")
+inputNomeDoLivro = ctk.CTkEntry(tabviewAbas.tab("Impresso"), placeholder_text="Digite aqui")
 inputNomeDoLivro.grid(row=0, column=1, padx=10, pady=10, columnspan=2, sticky="nsew")
 
-labelEdicaoDoLivro = CTkLabel(tabviewAbas.tab("Impresso"), text="Edição do livro:")
+labelEdicaoDoLivro = ctk.CTkLabel(tabviewAbas.tab("Impresso"), text="Edição do livro:")
 labelEdicaoDoLivro.grid(row=1, column=0, padx=10, pady=10)
-inputEdicaoDoLivro = CTkEntry(tabviewAbas.tab("Impresso"), placeholder_text="Digite aqui")
+inputEdicaoDoLivro = ctk.CTkEntry(tabviewAbas.tab("Impresso"), placeholder_text="Digite aqui")
 inputEdicaoDoLivro.grid(row=1, column=1, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-labelEditora = CTkLabel(tabviewAbas.tab("Impresso"), text="Editora:")
+labelEditora = ctk.CTkLabel(tabviewAbas.tab("Impresso"), text="Editora:")
 labelEditora.grid(row=2, column=0, padx=10, pady=10)
-inputEditora = CTkEntry(tabviewAbas.tab("Impresso"), placeholder_text="Digite aqui")
+inputEditora = ctk.CTkEntry(tabviewAbas.tab("Impresso"), placeholder_text="Digite aqui")
 inputEditora.grid(row=2, column=1, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-labelAnoPublicacaoImpresso = CTkLabel(tabviewAbas.tab("Impresso"), text="Ano de publicação:")
+labelAnoPublicacaoImpresso = ctk.CTkLabel(tabviewAbas.tab("Impresso"), text="Ano de publicação:")
 labelAnoPublicacaoImpresso.grid(row=3, column=0, padx=10, pady=10)
-inputAnoPublicacaoImpresso = CTkEntry(tabviewAbas.tab("Impresso"), placeholder_text="Digite aqui")
+inputAnoPublicacaoImpresso = ctk.CTkEntry(tabviewAbas.tab("Impresso"), placeholder_text="Digite aqui")
 inputAnoPublicacaoImpresso.grid(row=3, column=1, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-labelPaginas = CTkLabel(tabviewAbas.tab("Impresso"), text="Páginas:")
+labelPaginas = ctk.CTkLabel(tabviewAbas.tab("Impresso"), text="Páginas:")
 labelPaginas.grid(row=4, column=0, padx=10, pady=10)
-inputPaginas = CTkEntry(tabviewAbas.tab("Impresso"), placeholder_text="xx-xx")
+inputPaginas = ctk.CTkEntry(tabviewAbas.tab("Impresso"), placeholder_text="xx-xx")
 inputPaginas.grid(row=4, column=1, columnspan=2, padx=10, pady=10, sticky="nsew")
 
 labelAutores("Impresso", autores_impresso)
 
 tabviewAbas.tab("Digital").grid_columnconfigure(1, weight=1)
 
-labelTituloDoArtigo = CTkLabel(tabviewAbas.tab("Digital"), text="Título do artigo:")
+labelTituloDoArtigo = ctk.CTkLabel(tabviewAbas.tab("Digital"), text="Título do artigo:")
 labelTituloDoArtigo.grid(row=0, column=0, padx=10, pady=10)
-inputTituloDoArtigo = CTkEntry(tabviewAbas.tab("Digital"), placeholder_text="Digite aqui")
+inputTituloDoArtigo = ctk.CTkEntry(tabviewAbas.tab("Digital"), placeholder_text="Digite aqui")
 inputTituloDoArtigo.grid(row=0, column=1, padx=10, pady=10, columnspan=2, sticky="nsew")
 
-labelNomeDoSite = CTkLabel(tabviewAbas.tab("Digital"), text="Nome do site:")
+labelNomeDoSite = ctk.CTkLabel(tabviewAbas.tab("Digital"), text="Nome do site:")
 labelNomeDoSite.grid(row=1, column=0, padx=10, pady=10)
-inputNomeDoSite = CTkEntry(tabviewAbas.tab("Digital"), placeholder_text="Digite aqui")
+inputNomeDoSite = ctk.CTkEntry(tabviewAbas.tab("Digital"), placeholder_text="Digite aqui")
 inputNomeDoSite.grid(row=1, column=1, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-labelAnoPublicacao = CTkLabel(tabviewAbas.tab("Digital"), text="Ano da publicação:")
+labelAnoPublicacao = ctk.CTkLabel(tabviewAbas.tab("Digital"), text="Ano da publicação:")
 labelAnoPublicacao.grid(row=2, column=0, padx=10, pady=10)
-inputAnoPublicacao = CTkEntry(tabviewAbas.tab("Digital"), placeholder_text="Digite aqui")
+inputAnoPublicacao = ctk.CTkEntry(tabviewAbas.tab("Digital"), placeholder_text="Digite aqui")
 inputAnoPublicacao.grid(row=2, column=1, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-labelLink = CTkLabel(tabviewAbas.tab("Digital"), text="Link do artigo:")
+labelLink = ctk.CTkLabel(tabviewAbas.tab("Digital"), text="Link do artigo:")
 labelLink.grid(row=3, column=0, padx=10, pady=10)
-inputLink = CTkEntry(tabviewAbas.tab("Digital"), placeholder_text="https://exemplo.com.br")
+inputLink = ctk.CTkEntry(tabviewAbas.tab("Digital"), placeholder_text="https://exemplo.com.br")
 inputLink.grid(row=3, column=1, columnspan=2, padx=10, pady=10, sticky="nsew")
 
 labelAutores("Digital", autores_digital)
 
-botaoGerar = CTkButton(telaPrincipal, text="Gerar referência", command=lambda: botaoGerarOnClick(str(tabviewAbas.get())))
+botaoGerar = ctk.CTkButton(telaPrincipal, text="Gerar referência", command=lambda: botaoGerarOnClick(str(tabviewAbas.get())))
 botaoGerar.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="n")
 
-textReferencia = CTkTextbox(telaPrincipal, corner_radius=10)
+textReferencia = ctk.CTkTextbox(telaPrincipal, corner_radius=10)
 textReferencia.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 textReferencia.configure(state="disabled")
 
-botaoCopiar = CTkButton(telaPrincipal, text="Copiar", command=copiarReferencias)
+botaoCopiar = ctk.CTkButton(telaPrincipal, text="Copiar", command=copiarReferencias)
 botaoCopiar.grid(row=5, column=0, padx=10, sticky="w")
 
-botaoCopiar = CTkButton(telaPrincipal, text="Apagar", command=apagarReferencias, fg_color=vermelho, hover_color=vinho)
+botaoCopiar = ctk.CTkButton(telaPrincipal, text="Apagar", command=apagarReferencias, fg_color=vermelho, hover_color=vinho)
 botaoCopiar.grid(row=5, column=2, padx=10, sticky="e")
 
-botaoYuri = CTkButton(telaPrincipal, text="@yuridsduarte", fg_color="transparent", hover=False, width=0, command=instagramYuri)
+botaoYuri = ctk.CTkButton(telaPrincipal, text="@yuridsduarte", fg_color="transparent", hover=False, width=0, command=instagramYuri)
 botaoYuri.grid(row=6, column=2, padx=10, sticky="e")
 
 ReferenciaCerta.mainloop()
