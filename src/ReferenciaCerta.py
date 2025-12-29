@@ -12,24 +12,9 @@ autores_digital = []
 autores_impresso = []
 todasReferencias = []
 tema = 0
-caminhoTema = ["themes/escuro.json", "themes/claro.json", "themes/rose.json", "themes/red.json"]
-#TODO Trocar para SVG
-imagemTema = ["public/assets/forma-de-meia-lua.png", "public/assets/brilho-do-sol.png", "public/assets/flor.png", "public/assets/gota-de-agua.png"]
 
 vermelho = "#ED2100"
 vinho = "#B41A02"
-
-def trocaTema():
-    global tema, ReferenciaCerta
-
-    tema = (tema + 1) % len(caminhoTema)
-
-    ctk.set_appearance_mode("dark")
-    ctk.set_default_color_theme(caminhoTema[tema])
-
-    botaoTema.configure(text=str(tema))
-
-    return tema
 
 def labelAutores(pagina, lista_autores):
     linha = len(lista_autores) + 5
@@ -161,7 +146,7 @@ def instagramYuri():
     webbrowser.open("https://www.instagram.com/yuridsduarte/")
 
 ctk.set_appearance_mode("dark") 
-ctk.set_default_color_theme(caminhoTema[tema])
+ctk.set_default_color_theme("blue")
 ReferenciaCerta = ctk.CTk()
 telaLargura = ReferenciaCerta.winfo_screenwidth()
 telaAltura = ReferenciaCerta.winfo_screenheight()
@@ -174,9 +159,6 @@ ReferenciaCerta.grid_columnconfigure(0, weight=1)
 
 labelTitulo = ctk.CTkLabel(ReferenciaCerta, text="Gerador de Referência ABNT")
 labelTitulo.grid(row=0, column=0, padx=10, pady=5, columnspan=2, sticky="nsew")
-
-botaoTema = ctk.CTkButton(ReferenciaCerta, width = 10, height = 10, text = str(tema), command=trocaTema)
-botaoTema.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
 
 telaPrincipal = ctk.CTkScrollableFrame(ReferenciaCerta, telaLargura, telaAltura)
 telaPrincipal.grid(row=1, column=0, padx=10, pady=10, columnspan=2, sticky="nsew")
