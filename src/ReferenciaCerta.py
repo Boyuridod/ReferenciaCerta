@@ -6,31 +6,30 @@ import webbrowser
 from math import ceil
 import os
 import sqlite3
+import sys
 
 autores_digital = []
 autores_impresso = []
 todasReferencias = []
-modo = 0
-caminhoModo = ["../themes/escuro.json", "../themes/claro.json", "../themes/rose.json", "../themes/red.json"]
+tema = 0
+caminhoTema = ["themes/escuro.json", "themes/claro.json", "themes/rose.json", "themes/red.json"]
 #TODO Trocar para SVG
-imagemModo = ["../public/assets/forma-de-meia-lua.png", "../public/assets/brilho-do-sol.png", "../public/assets/flor.png", "../public/assets/gota-de-agua.png"]
+imagemTema = ["public/assets/forma-de-meia-lua.png", "public/assets/brilho-do-sol.png", "public/assets/flor.png", "public/assets/gota-de-agua.png"]
 
 vermelho = "#ED2100"
 vinho = "#B41A02"
 
-def trocaModo():
-    global modo
+def trocaTema():
+    global tema, ReferenciaCerta
 
-    modo += 1
+    tema = (tema + 1) % len(caminhoTema)
 
-    if(modo == 4):
-        modo = 0
+    ctk.set_appearance_mode("dark")
+    ctk.set_default_color_theme(caminhoTema[tema])
 
-    ctk.set_default_color_theme(caminhoModo[modo])
+    botaoTema.configure(text=str(tema))
 
-    botaoModo.configure(text=str(modo))
-
-    return modo
+    return tema
 
 def labelAutores(pagina, lista_autores):
     linha = len(lista_autores) + 5
@@ -162,7 +161,7 @@ def instagramYuri():
     webbrowser.open("https://www.instagram.com/yuridsduarte/")
 
 ctk.set_appearance_mode("dark") 
-ctk.set_default_color_theme(caminhoModo[modo])
+ctk.set_default_color_theme(caminhoTema[tema])
 ReferenciaCerta = ctk.CTk()
 telaLargura = ReferenciaCerta.winfo_screenwidth()
 telaAltura = ReferenciaCerta.winfo_screenheight()
@@ -176,8 +175,8 @@ ReferenciaCerta.grid_columnconfigure(0, weight=1)
 labelTitulo = ctk.CTkLabel(ReferenciaCerta, text="Gerador de Referência ABNT")
 labelTitulo.grid(row=0, column=0, padx=10, pady=5, columnspan=2, sticky="nsew")
 
-botaoModo = ctk.CTkButton(ReferenciaCerta, width = 10, height = 10, text = str(modo), command=trocaModo)
-botaoModo.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
+botaoTema = ctk.CTkButton(ReferenciaCerta, width = 10, height = 10, text = str(tema), command=trocaTema)
+botaoTema.grid(row = 0, column = 1, padx=10, pady=5, sticky = "e")
 
 telaPrincipal = ctk.CTkScrollableFrame(ReferenciaCerta, telaLargura, telaAltura)
 telaPrincipal.grid(row=1, column=0, padx=10, pady=10, columnspan=2, sticky="nsew")
