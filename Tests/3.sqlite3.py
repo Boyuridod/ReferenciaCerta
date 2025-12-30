@@ -40,4 +40,4 @@ select = bancoApp.execute("""
 for row in select:
     print(row)
 
-# banco.close()
+banco.close()
