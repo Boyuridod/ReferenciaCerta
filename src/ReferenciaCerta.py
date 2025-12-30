@@ -1,12 +1,15 @@
 import customtkinter as ctk
 from PIL import Image
 from GerarReferencia import gerarReferenciaDigital, gerarReferenciaImpressa
+import BancoDeDados
 import pyperclip
 import webbrowser
 from math import ceil
 import os
 import sqlite3
 import sys
+
+BancoDeDados.criaBanco()
 
 autores_digital = []
 autores_impresso = []
@@ -121,10 +124,10 @@ def botaoGerarOnClick(pagina):
     limpar(pagina)
 
 def copiarReferencias():
-    referencia = textReferencia.get("0.0", "end")[0:-3]
+    referencias = textReferencia.get("0.0", "end")[0:-3]
 
     try:
-        pyperclip.copy(referencia)
+        pyperclip.copy(referencias)
         copiado = "Copiado para a Área de Transferência!"
     except Exception as e:
         copiado = "Não foi possível copiar para sua área de transferência. Tente copiar manualmente." + e
@@ -134,11 +137,13 @@ def copiarReferencias():
     print(copiado)
 
 def apagarReferencias():
+    referencias = textReferencia.get("0.0", "end")[0:-3]
+
     textReferencia.configure(state="normal")
     textReferencia.delete("0.0", "end")
     textReferencia.configure(state="disabled")
 
-    # TODO Guardar no banco as antigas caso o usuario queira cancelar
+    BancoDeDados.apagarReferencias(referencias)
 
     todasReferencias.clear()
 
@@ -233,6 +238,7 @@ botaoGerar.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="n")
 
 textReferencia = ctk.CTkTextbox(telaPrincipal, corner_radius=10)
 textReferencia.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
+textReferencia.insert("end", BancoDeDados.recuperar())
 textReferencia.configure(state="disabled")
 
 botaoCopiar = ctk.CTkButton(telaPrincipal, text="Copiar", command=copiarReferencias)
